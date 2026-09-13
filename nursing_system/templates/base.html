@@ -1,0 +1,443 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="fa">
+
+
+<!-- Mirrored from theme.baitimo.ir/bouta/demos/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 12 Aug 2023 06:40:22 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>بوتا - درخواست پرستار آنلاین</title>
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Place favicon.png in the root directory -->
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon" />
+    <!-- Font Icons css -->
+    <link rel="stylesheet" href="{% static 'css/font-icons.css' %}">
+    <!-- plugins css -->
+    <link rel="stylesheet" href="{% static 'css/plugins.css' %}">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Responsive css -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:image" content="https://bouta.ir/static/img/slider/62.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="بوتا - درخواست پرستار آنلاین">
+    <meta property="og:description" content="بوتا به شما کمک میکند تا در سریع ترین زمان ممکن به بهترین خدمات پرستاری و بهداشتی دسترسی داشته باشید">
+    <meta property="og:url" content="https://bouta.ir/">
+    <meta property="og:site_name" content="بوتا - درخواست پرستار آنلاین">
+    <meta name="description" content="بوتا به شما کمک میکند تا در سریع ترین زمان ممکن به بهترین خدمات پرستاری و بهداشتی دسترسی داشته باشید">
+    <meta name="keywords" content="پرستار، درخواست پرستار">
+    <meta name="author" content="بوتا - درخواست پرستار آنلاین">
+
+    <!-- Open Graph for Locale -->
+    <meta property="og:locale" content="fa_IR">
+
+
+
+    {# ——— SITE-WIDE JSON-LD ——— #}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "بوتا",
+          "url": "https://bouta.ir",
+          "logo": "https://bouta.ir/static/img/favicon.png"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://bouta.ir",
+          "name": "بوتا"
+        }
+      ]
+    }
+    </script>
+    
+    {% block json_ld %}{% endblock %}
+
+</head>
+
+<body>
+    <!--[if lte IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+
+    <!-- Body main wrapper start -->
+    <div class="body-wrapper">
+
+        <!-- HEADER AREA START (header-3) -->
+        <header class="ltn__header-area ltn__header-3">
+            <!-- ltn__header-top-area start -->
+
+            <!-- ltn__header-top-area end -->
+            <!-- ltn__header-middle-area start -->
+            <div class="ltn__header-middle-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="site-logo">
+                                <a href="{% url 'home:index' %}"><img src="{% static 'img/logo.png' %}" alt="Logo"></a>
+                            </div>
+                        </div>
+                        <div class="col header-contact-serarch-column d-none d-lg-block">
+                            <div class="header-contact-search">
+                                <!-- header-feature-item -->
+                                <div class="header-feature-item">
+                                    <div class="header-feature-icon">
+                                        <i class="icon-call"></i>
+                                    </div>
+                                    <div class="header-feature-info">
+                                        <h6>تلفن</h6>
+                                        <p><a href="tel:0123456789">{{ base_info.phone_number }}</a></p>
+                                    </div>
+                                </div>
+                                <!-- header-search-2 -->
+                                <div class="header-search-2">
+                                    <form id="#123" method="get" action="{% url 'articles:article_search' %}">
+                                        <input type="text" name="q" value="{{ query }}" placeholder="جست و جو..." />
+                                        <button type="submit">
+                                            <span><i class="icon-search"></i></span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <!-- header-options -->
+                            <div class="ltn__header-options">
+                                <ul>
+                                    <li class="d-lg-none">
+                                        <!-- header-search-1 -->
+                                        <div class="header-search-wrap">
+                                            <div class="header-search-1">
+                                                <div class="search-icon">
+                                                    <i class="icon-search  for-search-show"></i>
+                                                    <i class="icon-cancel  for-search-close"></i>
+                                                </div>
+                                            </div>
+                                            <div class="header-search-1-form">
+                                                <form id="#" method="get" action="{% url 'articles:article_search' %}">
+                                                    <input type="text" name="q" value="{{ query }}"
+                                                        placeholder="جست و جو..." />
+                                                    <button type="submit">
+                                                        <span><i class="icon-search"></i></span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="d-none---">
+                                        <!-- user-menu -->
+                                        <div class="ltn__drop-menu user-menu">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><i class="icon-user"></i></a>
+                                                    <ul>
+                                                        {% if user.is_authenticated %}
+                                                            {% if user.is_nurse %}
+                                                            <li><a href="{% url 'nurse_users:dashboard' %}">پنل کاربری پرستار</a></li>
+                                                            {% else %}
+                                                            <li><a href="{% url 'normal_users:user_dashboard' %}">پنل کاربری</a></li>
+                                                            <li><a href="{% url 'nurse_users:register' %}">تغییر به پرستار</a></li>
+                                                            {% endif %}
+                                                        {% else %}
+                                                        <li><a href="{% url 'normal_users:login' %}">ورود</a></li>
+                                                        <li><a href="{% url 'normal_users:register' %}">ثبت نام کاربران</a></li>
+                                                        <li><a href="{% url 'nurse_users:new_register' %}">ثبت نام پرستاران</a></li>
+                                                        {% endif %}
+
+                                                        
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ltn__header-middle-area end -->
+            <!-- header-bottom-area start -->
+            <div
+                class="header-bottom-area ltn__border-top ltn__header-sticky  ltn__sticky-bg-white--- ltn__sticky-bg-secondary ltn__secondary-bg section-bg-1 menu-color-white d-none d-lg-block">
+                <div class="container">
+                    <div class="row">
+                        <div class="col header-menu-column justify-content-center">
+                            <div class="sticky-logo">
+                                <div class="site-logo">
+                                    <a href="{% url 'home:index' %}"><img src="{% static 'img/logo-3.png' %}" alt="Logo"></a>
+                                </div>
+                            </div>
+                            <div class="header-menu header-menu-2">
+                                <nav>
+                                    <div class="ltn__main-menu">
+                                        <ul>
+                                            <li><a href="{% url 'home:index' %}">خانه</a></li>
+                                            <li><a href="{% url 'home:service' %}">خدمات ما</a></li>
+                                            <li><a href="{% url 'services:nearby_nurses' %}">پرستاران اطراف</a></li>
+                                            <li><a href="{% url 'articles:article_list' %}">وبلاگ</a></li>
+                                            <li><a href="{% url 'home:about_us' %}">درباره ما</a></li>
+                                            <li><a href="{% url 'home:faq' %}">پرسش های متداول</a></li>
+                                            <li><a href="{% url 'home:contact_us' %}">ارتباط با ما</a></li>                                            
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- header-bottom-area end -->
+        </header>
+        <!-- HEADER AREA END -->
+
+        <!-- MOBILE MENU START -->
+        <div class="mobile-header-menu-fullwidth mb-30 d-block d-lg-none">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Mobile Menu Button -->
+                        <div class="mobile-menu-toggle d-lg-none">
+                            <span>منو</span>
+                            <a href="#ltn__utilize-mobile-menu" class="ltn__utilize-toggle">
+                                <svg viewBox="0 0 800 600">
+                                    <path
+                                        d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200"
+                                        id="top"></path>
+                                    <path d="M300,320 L540,320" id="middle"></path>
+                                    <path
+                                        d="M300,210 C300,210 520,210 540,210 C740,210 640,530 520,410 C440,330 300,190 300,190"
+                                        id="bottom" transform="translate(480, 320) scale(1, -1) translate(-480, -318) ">
+                                    </path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MOBILE MENU END -->
+
+        <!-- Utilize Mobile Menu Start -->
+        <div id="ltn__utilize-mobile-menu" class="ltn__utilize ltn__utilize-mobile-menu">
+            <div class="ltn__utilize-menu-inner ltn__scrollbar">
+                <div class="ltn__utilize-menu-head">
+                    <div class="site-logo">
+                        <a href="{% url 'home:index' %}"><img src="{% static 'img/logo.png' %}" alt="Logo"></a>
+                    </div>
+                    <button class="ltn__utilize-close">×</button>
+                </div>
+                <div class="ltn__utilize-menu-search-form">
+                    <form method="get" action="{% url 'articles:article_search' %}">
+                        <input type="text" name="q" value="{{ query }}" placeholder="جست و جو...">
+                        <button><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="ltn__utilize-menu">
+                    <ul>
+                        <ul>
+                            <li><a href="{% url 'home:index' %}">خانه</a></li>
+                            <li><a href="{% url 'home:service' %}">خدمات ما</a></li>
+                            <li><a href="{% url 'services:nearby_nurses' %}">پرستاران اطراف</a></li>
+                            <li><a href="{% url 'articles:article_list' %}">وبلاگ</a></li>
+                            <li><a href="{% url 'home:about_us' %}">درباره ما</a></li>
+                            <li><a href="{% url 'home:faq' %}">پرسش های متداول</a></li>
+                            <li><a href="{% url 'home:contact_us' %}">ارتباط با ما</a></li>                            
+                        </ul>
+                    </ul>
+                </div>
+                <div class="ltn__utilize-buttons ltn__utilize-buttons-2">
+                    <ul>
+                        {% if user.is_authenticated %}
+                            {% if user.is_nurse %}
+                            <li>
+                                <a href="{% url 'nurse_users:dashboard' %}" title="My Account">
+                                    <span class="utilize-btn-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    پنل کاربری پرستار
+                                </a>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a href="{% url 'normal_users:user_dashboard' %}" title="My Account">
+                                    <span class="utilize-btn-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    پنل کاربری
+                                </a>
+                            </li>
+                            <li><a href="{% url 'nurse_users:register' %}">ثبت نام پرستاران</a></li>
+                            {% endif %}
+                        {% else %}
+                        <li><a href="{% url 'normal_users:login' %}">ورود</a></li>
+                        <li><a href="{% url 'normal_users:register' %}">ثبت نام کاربران</a></li>
+                        <li><a href="{% url 'nurse_users:new_register' %}">ثبت نام پرستاران</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Utilize Mobile Menu End -->
+
+        <div class="ltn__utilize-overlay"></div>
+
+        {% if messages %}
+
+            {% for msg in messages %}	
+                <p class="alert alert-{{msg.tags}}"  id="msg"> {{msg}} </p>
+            {% endfor %}
+
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
+        <!-- FOOTER AREA START -->
+        <footer class="ltn__footer-area  ">
+            <div class="footer-top-area  section-bg-2 plr--5">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 col-sm-6 col-12">
+                            <div class="footer-widget footer-about-widget">
+                                <div class="footer-logo">
+                                    <div class="site-logo">
+                                        <img src="{% static 'img/logo-2.png' %}" alt="Logo">
+                                    </div>
+                                </div>
+                                    <p>{{ base_info.footer_description }}</p>
+                                <div class="footer-address">
+                                    <ul>
+                                        <li>
+                                            <div class="footer-address-icon">
+                                                <i class="icon-placeholder"></i>
+                                            </div>
+                                            <div class="footer-address-info">
+                                                <p>{{ base_info.address }}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="footer-address-icon">
+                                                <i class="icon-call"></i>
+                                            </div>
+                                            <div class="footer-address-info">
+                                                <p><a href="tel:+0123-456789">{{ base_info.phone_number }}</a></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="footer-address-icon">
+                                                <i class="icon-mail"></i>
+                                            </div>
+                                            <div class="footer-address-info">
+                                                <p><a href="mailto:example@example.com">{{ base_info.email }}</a></p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-6 col-sm-6 col-12">
+                            <div class="footer-widget footer-menu-widget clearfix">
+                                <h4 class="footer-title">شرکت</h4>
+                                <div class="footer-menu">
+                                    <ul>
+                                        <li><a href="{% url 'home:about_us' %}">درباره ما</a></li>
+                                        <li><a href="{% url 'home:contact_us' %}">ارتباط با ما</a></li>
+                                        <li><a href="{% url 'home:history' %}">سوابق ما</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-6 col-sm-6 col-12">
+                            <div class="footer-widget footer-menu-widget clearfix">
+                                <h4 class="footer-title">سرویس ها</h4>
+                                <div class="footer-menu">
+                                    <ul>
+                                        <li><a href="{% url 'home:service' %}">خدمات ما</a></li>
+                                        <li><a href="{% url 'services:nearby_nurses' %}">پرستاران اطراف</a></li>
+                                        <li><a href="{% url 'home:faq' %}">پرسش های متداول</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-6 col-sm-6 col-12">
+                            <div class="footer-widget footer-menu-widget clearfix">
+                                <h4 class="footer-title">لینک های مفید</h4>
+                                <div class="footer-menu">
+                                    <ul>
+                                        <li><a href="{% url 'home:index' %}">خانه</a></li>
+                                        <li><a href="{% url 'articles:article_list' %}">وبلاگ</a></li>
+                                        <li><a href="{% url 'home:terms' %}">شرایط و قوانین</a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-sm-12 col-12">
+                            <div class="footer-widget footer-newsletter-widget">
+                                <h4 class="footer-title">خبرنامه</h4>
+                                <p>با دسترسی به بخش وبلاگ از آپدیت ها و اخبار مطلع باشید.</p>
+                                <div class="footer-menu">
+                                    <ul>
+                                        <li><a href="{% url 'articles:article_list' %}">وبلاگ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ltn__copyright-area ltn__copyright-2 section-bg-7  plr--5">
+                <div class="container-fluid ltn__border-top-2">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="ltn__copyright-design clearfix">
+                                <p>تمامی حقوق برای بوتا محفوظ است <span class="current-year"></span>&copy
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 align-self-center">
+                            <div class="ltn__copyright-menu text-end">
+                                <ul>
+                                    <li><a href="{% url 'home:index' %}">خانه</a></li>
+                                    <li><a href="{% url 'home:faq' %}">پرسش هاس متداول</a></li>
+                                    <li><a href="{% url 'home:terms' %}">قوانین و مقررات</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- FOOTER AREA END -->
+
+    </div>
+    <!-- Body main wrapper end -->
+
+    <!-- All JS Plugins -->
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <!-- Main JS -->
+        <script src="{% static 'js/main.js' %}"></script>
+    <!-- number farsi JS -->
+    <script src="{% static 'js/number-farsi.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+    
+</body>
+</html>

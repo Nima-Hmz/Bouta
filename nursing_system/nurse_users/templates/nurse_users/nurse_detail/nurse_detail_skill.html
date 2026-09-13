@@ -1,0 +1,96 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+        <!-- BREADCRUMB AREA START -->
+        <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{% static 'img/bg/14.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ltn__breadcrumb-inner">
+                            <h1 class="page-title">صفحه ارسال درخواست</h1>
+                            <div class="ltn__breadcrumb-list">
+                                <ul>
+                                    <li><a href="{% url 'home:index' %}"><span class="ltn__secondary-color"><i
+                                                    class="fas fa-home"></i></span> خانه</a></li>
+                                    <li>ارسال درخواست</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- BREADCRUMB AREA END -->
+
+        <!-- WISHLIST AREA START -->
+        <div class="ltn__checkout-area mb-105">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ltn__checkout-inner">
+                            <div class="ltn__checkout-single-content ltn__returning-customer-wrap">
+                                <h5>شما در حال ارسال درخواست خدمت به {{ nurse_core.first_name }} {{ nurse_core.last_name }} هستید</h5>
+                                <h5>خدمت انتخاب شده : {{ nurse_skill.skill.title }}</h5>
+                            </div>
+                            <div class="ltn__checkout-single-content mt-50">
+                                <h4 class="title-2">اطلاعات درخواست</h4>
+                                <div class="ltn__checkout-single-content-info">
+                                    <form method="post" action="{% url 'services:service_create' nurse_slug=nurse_core.display_user_name skill_slug=nurse_skill.skill.slug %}">
+                                        {% csrf_token %}  
+                                        <div class="row">
+
+                                            {% if nurse_subskills %}
+                                                {% for nurse_subskill in nurse_subskills %}
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="subskillid_{{ nurse_subskill.id }}" class="form-label">{{ nurse_subskill.subskill.title }} ({{ nurse_subskill.custom_price|intcomma }} تومان):</label>
+                                                        <input type="hidden" name="nurse_subskill_id" value="{{ nurse_subskill.id }}">  <!-- Hidden field to track skill ID -->
+                                                        <input type="number" class="form-control" id="subskillid_{{ nurse_subskill.id }}" name="subskill_{{ nurse_subskill.id }}" placeholder="تعداد({{ nurse_subskill.subskill.price_description }})" aria-describedby="quantityHelp">
+                                                        <div id="quantityHelp" class="form-text">در صورتی که نیازی به این خدمت ندارید میتوانید آن را خالی یا صفر بگذارید</div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                                <h6>توضیحات بیشتر (اختیاری)</h6>
+                                                <div class="input-item input-item-textarea ltn__custom-icon">
+                                                    <textarea name="long_message"
+                                                        placeholder="توضیحات بیشتر در رابطه با خرید خود ارائه دهید."></textarea>
+                                                </div>
+                                                <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">ارسال درخواست خدمت
+                                                </button>
+                                            {% else %}
+                                            خدمتی توسط پرستار تعریف نشده
+                                            <br>
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                    <br>
+                                            <h4 class="title-2">لیست تعرفه استاندارد</h4>
+                                            <table class="table">
+                                                {% if nurse_subskills %}
+                                                <tbody>
+                                                    {% for subskill in nurse_subskills %}
+                                                    <tr>
+                                                        <td>{{ subskill.subskill.title }}<strong> × {{ subskill.subskill.price_description }}</strong></td>
+                                                        <td>{{ subskill.subskill.standard_price|intcomma }} تومان</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                                {% else %}
+                                                خدمتی توسط پرستار تعریف نشده
+                                                {% endif %}
+                                            </table>
+                                        
+                                </div>                               
+                            </div>                          
+                        </div>                        
+                   </div>                
+                </div>        
+            </div>
+        </div>
+        <!-- WISHLIST AREA START -->
+
+{% endblock %}

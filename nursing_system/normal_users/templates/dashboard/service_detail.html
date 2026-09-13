@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jformat %}
+{% load humanize %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+    
+<!-- BREADCRUMB AREA START -->
+<div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{% static 'img/bg/14.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__breadcrumb-inner">
+                    <h1 class="page-title">جزئیات سرویس</h1>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a href="{% url 'home:index' %}"><span class="ltn__secondary-color"><i
+                                            class="fas fa-home"></i></span> خانه</a></li>
+                            <li>جزئیات سرویس</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BREADCRUMB AREA END -->
+
+<!-- WISHLIST AREA START -->
+<div class="liton__wishlist-area pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- PRODUCT TAB AREA START -->
+                <div class="ltn__product-tab-area">
+                    <div class="container">
+                        <div class="row">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade active show" id="liton_tab_1_1">
+                                        <div class="ltn__myaccount-tab-content-inner">
+                                            <p>پرستار محترم از طریق این بخش میتوانید درخواست های خدمت را مدیریت کنید.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 learts-mb-30">
+                                            <h4>اطلاعات فردی پرستار:</h4>
+                                            <address>
+                                                <p>نام : {{ the_nurse.first_name }} {{the_nurse.last_name}} <a href="{% url 'nurse_users:nurse_detail' the_nurse.display_user_name %}" style="color: green;">نمایش پروفایل پرستار کلیک کنید</a></p>
+                                                <p>استان : {{ the_nurse.get_province_display }}</p>
+                                                <p>شماره موبایل : {% if show_nurse_detail %}{{ the_nurse.phone_number }}{% else %} درخواست شما توسط هنوز پرستار تایید نشده است{% endif %}</p>
+                                                <p>امتیاز کاربران به پرستار : 
+                                                {% if full_stars is not None %}
+                                                    <span class="star-rating-rtl inline-star-rating">
+                                                        {% for i in "12345" %}
+                                                            {% if forloop.counter <= full_stars %}
+                                                                <i class="fas fa-star text-warning"></i>
+                                                            {% elif has_half_star and forloop.counter == full_stars|add:"1" %}
+                                                                <i class="fas fa-star-half-alt text-warning"></i>
+                                                            {% else %}
+                                                                <i class="far fa-star text-warning"></i>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </span>
+                                                {% else %}
+                                                    <span>امتیاز ثبت شده ای یافت نشد</span>
+                                                {% endif %}</p>
+                                                <p>وضعیت فعال بودن حساب : {% if the_nurse.is_active %}✅{% else %}❌{% endif %}</p>
+                                                <p>وضعیت باز بودن درخواست:  
+                                                {% if the_service.closed %}❌{% else %}✅{% endif %}.</p>
+                                            </address>
+                                        </div>
+                                        <div class="col-md-6 col-12 learts-mb-30">
+                                            <h4>اطلاعات درخواست:</h4>
+                                            <address>
+                                                <p>موضوع درخوسات ثبت شده : {{ the_service.skill_title }}</p>
+                                                <p> زمان و تاریخ درخواست : {{ the_service.j_created_at | jformat:"%H:%M:%S - %Y/%m/%d" }}</p>
+                                                <p>کد رهگیری درخواست: {{ the_service.service_request_id }}</p>
+                                                <p> وضعیت درخواست : {{ the_service.get_status_display }}</p>
+                                                <p>وضعیت پرداخت : {% if the_service.payment.payment_status %}✅{% else %}❌{% endif %}</p>
+                                            </address>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>خدمات</th>
+                                                    <th>قیمت</th>
+                                                    <th>تعداد</th>
+                                                    <th>قیمت کل</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for service_item in service_items %}
+                                                <tr>
+                                                    <td>{{ service_item.subskill_title }}</td>
+                                                    <td>{{ service_item.price|intcomma }} تومان</td>
+                                                    <td>{{ service_item.quantity }} (بر اساس واحد)</td>
+                                                    <td>{{ service_item.get_cost|intcomma }} تومان</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <p>ارزش کل خدمات : {{ the_service.get_total_price|intcomma }} تومان</p>
+                                    <br>
+                                    <p>توضیحات وارد شده توسط کاربر:</p>
+                                    <div class="input-item input-item-textarea ltn__custom-icon">
+                                        <textarea name="ltn__message"
+                                            placeholder="کاربر توضیحاتی وارد نکرده است" readonly>{{ the_service.service_detail_user }}</textarea>
+                                    </div>
+
+                                    {% if the_service.status == 'pending' %}
+                                        <div class="d-flex">
+                                            <form method="post" action="{% url 'services:user_service_cancel' the_service.service_request_id %}" class="me-2" onsubmit="return confirmNurseCancel()">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn theme-btn-4 btn-effect-1 btn-danger">لغو درخواست</button>
+                                            </form>
+                                        </div>
+                                    {% elif the_service.status == 'accepted' %}
+                                    <div class="d-flex">
+                                        <form method="post" action="{% url 'services:user_end_service' the_service.service_request_id %}" class="me-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn theme-btn-1 btn-effect-1 btn-success">اتمام خدمت</button>
+                                        </form>
+                                        <form method="post" action="{% url 'services:user_middel_service_cancel' the_service.service_request_id %}" onsubmit="return confirmNurseMiddleCancel()">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn theme-btn-4 btn-effect-1 btn-danger">لغو خدمت</button>
+                                        </form>
+                                    </div>
+                                    
+                                    <br>
+
+                                    <div class="d-flex">
+                                        <form method="post" action="{% url 'payment:user_service_payment' service_id=the_service.service_request_id %}" class="me-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn theme-btn-1 btn-effect-1 btn-success">برای پرداخت کلیک کنید</button>
+                                        </form>
+                                    </div>
+
+
+                                    {% elif the_service.status == 'payment_pending' %}
+
+                                    <div class="d-flex">
+                                        <form method="post" action="{% url 'payment:user_service_payment' service_id=the_service.service_request_id %}" class="me-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn theme-btn-1 btn-effect-1 btn-success">برای پرداخت کلیک کنید</button>
+                                        </form>
+                                    </div>
+
+
+                                    {% elif the_service.status == 'completed' %}
+                                    <div class="container mt-5">
+                                    {% if the_service.rating.user_rating %}
+                                    <h4>شما قبلاً امتیاز داده‌اید</h4>
+                                    <div id="star-rating" dir="rtl" class="d-flex">
+                                      <input type="radio" name="stars" value="1" id="star1" class="d-none" {% if the_service.rating.user_rating == 1 %}checked{% endif %} disabled>
+                                      <label for="star1" class="mx-1 star" style="font-size: 2rem; color: {% if the_service.rating.user_rating >= 1 %}gold{% else %}gray{% endif %}; cursor: default;">&#9733;</label>
+                                      
+                                      <input type="radio" name="stars" value="2" id="star2" class="d-none" {% if the_service.rating.user_rating == 2 %}checked{% endif %} disabled>
+                                      <label for="star2" class="mx-1 star" style="font-size: 2rem; color: {% if the_service.rating.user_rating >= 2 %}gold{% else %}gray{% endif %}; cursor: default;">&#9733;</label>
+                                      
+                                      <input type="radio" name="stars" value="3" id="star3" class="d-none" {% if the_service.rating.user_rating == 3 %}checked{% endif %} disabled>
+                                      <label for="star3" class="mx-1 star" style="font-size: 2rem; color: {% if the_service.rating.user_rating >= 3 %}gold{% else %}gray{% endif %}; cursor: default;">&#9733;</label>
+                                      
+                                      <input type="radio" name="stars" value="4" id="star4" class="d-none" {% if the_service.rating.user_rating == 4 %}checked{% endif %} disabled>
+                                      <label for="star4" class="mx-1 star" style="font-size: 2rem; color: {% if the_service.rating.user_rating >= 4 %}gold{% else %}gray{% endif %}; cursor: default;">&#9733;</label>
+                                      
+                                      <input type="radio" name="stars" value="5" id="star5" class="d-none" {% if the_service.rating.user_rating == 5 %}checked{% endif %} disabled>
+                                      <label for="star5" class="mx-1 star" style="font-size: 2rem; color: {% if the_service.rating.user_rating >= 5 %}gold{% else %}gray{% endif %}; cursor: default;">&#9733;</label>
+                                    </div>
+                                    <div class="input-item input-item-textarea ltn__custom-icon">
+                                        <textarea name="user_comment" placeholder="توضیحی وارد نشده" readonly>{{ the_service.rating.user_review }}</textarea>
+                                      </div>
+                                    {% else %}
+                                    <form method="post" action="{% url 'services:user_rate_service' the_service.service_request_id %}" novalidate autocomplete="off">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                          <label>امتیاز به پرستار :</label>
+                                          <!-- Set the container direction to RTL -->
+                                          <div id="star-rating" dir="rtl" class="d-flex">
+                                            <!-- Note: Order the inputs so that the first element in the HTML corresponds to the rightmost star -->
+                                            <input type="radio" name="stars" value="1" id="star1" class="d-none">
+                                            <label for="star1" class="mx-1 star" style="font-size: 2rem; color: gray; cursor: pointer;">&#9733;</label>
+                                            
+                                            <input type="radio" name="stars" value="2" id="star2" class="d-none">
+                                            <label for="star2" class="mx-1 star" style="font-size: 2rem; color: gray; cursor: pointer;">&#9733;</label>
+                                            
+                                            <input type="radio" name="stars" value="3" id="star3" class="d-none">
+                                            <label for="star3" class="mx-1 star" style="font-size: 2rem; color: gray; cursor: pointer;">&#9733;</label>
+                                            
+                                            <input type="radio" name="stars" value="4" id="star4" class="d-none">
+                                            <label for="star4" class="mx-1 star" style="font-size: 2rem; color: gray; cursor: pointer;">&#9733;</label>
+                                            
+                                            <input type="radio" name="stars" value="5" id="star5" class="d-none">
+                                            <label for="star5" class="mx-1 star" style="font-size: 2rem; color: gray; cursor: pointer;">&#9733;</label>
+                                          </div>
+                                        </div>
+                                        <div class="input-item input-item-textarea ltn__custom-icon">
+                                          <textarea name="user_comment" placeholder="نظر خود در مورد پرستار را وارد کنید (اختیاری)"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-3 btn-success">ثبت</button>
+                                      </form>
+
+                                    {% endif %}
+                                    </div>
+                                    {% else %}
+                                    {% endif %}
+
+                                    <br>
+                                        <div class="ltn__checkout-single-content ltn__coupon-code-wrap">
+                                            <h5>مشکلی در خدمت وجود دارد ؟ <a class="ltn__secondary-color" href="#ltn__coupon-code"
+                                                    data-bs-toggle="collapse">برای گزارش مشکل کلیک کنید</a></h5>
+                                            <div id="ltn__coupon-code" class="collapse ltn__checkout-single-content-info">
+                                                <div class="ltn__coupon-code-form">
+                                                    <p>برای گزارش مشکل توضیح خود را وارد کرده و بر روی دکمه ارسال کلیک کنید 
+                                                        .همکاران ما در سریع ترین زمان ممکن گزارش شما را بررسی و پیگیری میکنند
+                                                        همچنین به یاد داشته باشید که همکاران ما همیشه از طریق تماس های تلفنی پاسخگو شما عزیزان میباشند.
+                                                    </p>
+                                                    <form method="post" action="{% url 'services:user_report_service' the_service.service_request_id %}">
+                                                        {% csrf_token %}
+                                                        <div class="input-item input-item-textarea ltn__custom-icon">
+                                                            <textarea name="report_description" placeholder="محتوا گزارش خود را بنویسید"></textarea>
+                                                        </div>
+                                                        <button class="btn theme-btn-2 btn-effect-2 text-uppercase"> 
+                                                            ارسال</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PRODUCT TAB AREA END -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- WISHLIST AREA START -->
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function confirmNurseCancel() {
+        return confirm("آیا مطمئن هستید که می‌خواهید این درخواست را لغو کنید؟");
+    }
+    function confirmNurseMiddleCancel() {
+        return confirm("آیا مطمئن هستید که می‌خواهید این درخواست را لغو کنید؟");
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+  const stars = document.querySelectorAll('input[name="stars"]');
+  const labels = document.querySelectorAll('#star-rating label.star');
+
+  stars.forEach(star => {
+    star.addEventListener('change', function(){
+      // Reset all labels to gray
+      labels.forEach(label => label.style.color = 'gray');
+      let selectedValue = parseInt(this.value);
+      // In our reordered HTML for RTL, we highlight labels with value <= selectedValue.
+      labels.forEach(label => {
+        let starValue = parseInt(label.getAttribute('for').replace('star',''));
+        if(starValue <= selectedValue) {
+          label.style.color = 'gold';
+        }
+      });
+    });
+  });
+});
+</script>
+{% endblock %}

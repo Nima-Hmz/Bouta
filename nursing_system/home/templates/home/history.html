@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jformat %}
+
+{% block content %}
+
+<!-- BREADCRUMB AREA START -->
+        <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{% static 'img/bg/14.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ltn__breadcrumb-inner">
+                            <h1 class="page-title">سوابق ما</h1>
+                            <div class="ltn__breadcrumb-list">
+                                <ul>
+                                    <li><a href="index.html"><span class="ltn__secondary-color"><i
+                                                    class="fas fa-home"></i></span> خانه</a></li>
+                                    <li>سوابق</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- BREADCRUMB AREA END -->
+
+        <!-- OUR HISTORY AREA START -->
+        <div class="ltn__our-history-area pb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ltn__our-history-inner">
+                            <div class="ltn__tab-menu text-uppercase">
+                                <div class="nav">
+                                    <a class="active show" data-bs-toggle="tab" href="#liton_tab_2_1">1403</a>
+                                    <a data-bs-toggle="tab" href="#liton_tab_2_2">1404</a>
+                                    <a data-bs-toggle="tab" href="#liton_tab_2_3">...</a>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show" id="liton_tab_2_1">
+                                    <div class="ltn__product-tab-content-inner">
+                                        <div class="row">
+                                            <div class="col-lg-6 align-self-center">
+                                                <div class="about-us-img-wrap about-img-left">
+                                                    <img src="{% static 'img/img-slide/11.jpg' %}" alt="Image">
+                                                    <div class="ltn__history-icon">
+                                                        <i class="fas fa-award"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 align-self-center">
+                                                <div class="about-us-info-wrap">
+                                                    <div
+                                                        class="section-title-area ltn__section-title-2--- text-center---">
+                                                        <h6
+                                                            class="section-subtitle section-subtitle-2 ltn__secondary-color">
+                                                            شروع</h6>
+                                                        <h1 class="section-title">{{ history.title1 }}</h1>
+                                                        <p>{{ history.description|safe }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="liton_tab_2_2">
+                                    <div class="ltn__product-tab-content-inner">
+                                        <div class="row">
+                                            <div class="col-lg-6 align-self-center">
+                                                <div class="about-us-img-wrap about-img-left">
+                                                    <img src="{% static 'img/img-slide/13.jpg' %}" alt="Image">
+                                                    <div class="ltn__history-icon">
+                                                        <i class="icon-award"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 align-self-center">
+                                                <div class="about-us-info-wrap">
+                                                    <div
+                                                        class="section-title-area ltn__section-title-2--- text-center---">
+                                                        <h6
+                                                            class="section-subtitle section-subtitle-2 ltn__secondary-color">
+                                                            اولین قدم ها</h6>
+                                                        <h1 class="section-title">
+                                                            {{ history.title2 }}
+                                                        </h1>
+                                                        <p>{{ history.description2|safe }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="liton_tab_2_3">
+                                    <div class="ltn__product-tab-content-inner">
+                                        <div class="row">
+                                            <div class="col-lg-6 align-self-center">
+                                                <div class="about-us-img-wrap about-img-left">
+                                                    <img src="{% static 'img/img-slide/12.jpg' %}" alt="Image">
+                                                    <div class="ltn__history-icon">
+                                                        <i class="fas fa-medal"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 align-self-center">
+                                                <div class="about-us-info-wrap">
+                                                    <div
+                                                        class="section-title-area ltn__section-title-2--- text-center---">
+                                                        <h6
+                                                            class="section-subtitle section-subtitle-2 ltn__secondary-color">
+                                                            آینده</h6>
+                                                        <h1 class="section-title">
+                                                             {{ history.title3 }}
+                                                        </h1>
+                                                        <p>{{ history.description3|safe }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- OUR HISTORY AREA END -->
+
+        <div class="ltn__service-area section-bg-1 pt-115 pb-70">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title-area ltn__section-title-2--- text-center">
+                            <h6 class="section-subtitle section-subtitle-2 ltn__secondary-color">سرویس ها</h6>
+                            <h1 class="section-title">ما چه خدماتی ارائه میدهیم؟</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row  justify-content-center">
+                    <div class="col-lg-4 col-sm-6 col-12">
+                        <div class="ltn__feature-item ltn__feature-item-6 text-center bg-white  box-shadow-1">
+                            <div class="ltn__feature-icon">
+                                <span><i class="flaticon-hospital"></i></span>
+                                <!-- <img src="img/icons/icon-img/21.png" alt="#"> -->
+                            </div>
+                            <div class="ltn__feature-info">
+                                <h3>دسترسی ۷/۲۴ به خدمات درمانی</h3>
+                                <p>با بوتا هر جای ایران که باشی میتونی ۷ روز هفته و ۲۴ ساعته شبانه روز
+                                    به خدمات بهداشتی درمانی دسترسی داشته باشی
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 col-12">
+                        <div class="ltn__feature-item ltn__feature-item-6 text-center bg-white  box-shadow-1">
+                            <div class="ltn__feature-icon">
+                                <span><i class="flaticon-operator"></i></span>
+                                <!-- <img src="img/icons/icon-img/21.png" alt="#"> -->
+                            </div>
+                            <div class="ltn__feature-info">
+                                <h3>پشتیبانی و کمک آنلاین رایگان</h3>
+                                <p>علاوه بر دسترسی به خدمات درمانی با پشتیبانی ۲۴ ساعته بوتا
+                                    خیالت از خدماتی که دریافت میکنی راحت و تضمین شدست
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 col-12">
+                        <div class="ltn__feature-item ltn__feature-item-6 text-center bg-white  box-shadow-1">
+                            <div class="ltn__feature-icon">
+                                <span><i class="flaticon-secure"></i></span>
+                                <!-- <img src="img/icons/icon-img/21.png" alt="#"> -->
+                            </div>
+                            <div class="ltn__feature-info">
+                                <h3>مطب آنلاین برای بیماران</h3>
+                                <p>علاوه بر خدمات درمانی میتونی به وبلاگ رسمی بوتا دسترسی داشته باشی و 
+                                    از مطالب مفید و معتبر در حوزه بهداشت و درمان استفاده کنی
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- SERVICE AREA END -->
+
+        <!-- CALL TO ACTION START (call-to-action-5) -->
+        <div class="call-to-action-area call-to-action-5 bg-image bg-overlay-theme-90 pt-40 pb-25"
+            data-bs-bg="{% static 'img/bg/13.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="call-to-action-inner call-to-action-inner-5 text-decoration text-center">
+                            <h2 class="white-color">24 ساعته آماده پاسخ گویی هستیم <a href="contact.html"></a></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CALL TO ACTION END -->
+
+        <!-- BLOG AREA START (blog-3) -->
+        <div class="ltn__blog-area pt-120 pb-70">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title-area ltn__section-title-2--- text-center">
+                            <h6 class="section-subtitle section-subtitle-2 ltn__secondary-color">خبر ها و وبلاگ</h6>
+                            <h1 class="section-title">داغ ترین مطالب وبلاگ</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row  ltn__blog-slider-one-active slick-arrow-1 ltn__blog-item-3-normal">
+                    {% for art in star_articles %}
+                    <!-- Blog Item -->
+                    <div class="col-lg-12">
+                        <div class="ltn__blog-item ltn__blog-item-3">
+                            <div class="ltn__blog-img">
+                                <a href="{% url 'articles:article_detail' art.slug %}"><img src="{{ art.thumbnail.url }}" alt="#"></a>
+                            </div>
+                            <div class="ltn__blog-brief">
+                                <div class="ltn__blog-meta">
+                                    <ul>
+                                        <li class="ltn__blog-author">
+                                            <i class="far fa-user"></i>توسط: Bouta
+                                        </li>
+                                        <li class="ltn__blog-tags">
+                                           <i class="fas fa-tags"></i>{{ art.category.first }}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <h3 class="ltn__blog-title"><a href="{% url 'articles:article_detail' art.slug %}">{{ art.title }}
+                                        </a></h3>
+                                <div class="ltn__blog-meta-btn">
+                                    <div class="ltn__blog-meta">
+                                        <ul>
+                                            <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>{{ art.jalali_datetime|jformat:"%H:%M - %Y/%m/%d" }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="ltn__blog-btn">
+                                        <a href="{% url 'articles:article_detail' art.slug %}">اطلاعات بیشتر</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

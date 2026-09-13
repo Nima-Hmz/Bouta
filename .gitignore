@@ -1,0 +1,5 @@
+/venv1/
+.env
+
+nursing_system/celerybeat-schedule
+nursing_system/celerybeat-schedule.*

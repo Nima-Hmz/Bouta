@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- BREADCRUMB AREA START -->
+<div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{% static 'img/bg/14.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__breadcrumb-inner">
+                    <h1 class="page-title">حساب کاربری</h1>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a href="index.html"><span class="ltn__secondary-color"><i
+                                            class="fas fa-home"></i></span> خانه</a></li>
+                            <li>ورود</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BREADCRUMB AREA END -->
+
+<!-- LOGIN AREA START -->
+<div class="ltn__login-area pb-65">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title-area text-center">
+                    <h1 class="section-title">ورود به حساب کاربری</h1>
+                    <p>با ورود به حساب کاربری خود از تمامی امکانات وب سایت بهره‌مند شوید</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="account-login-inner">
+                    <form action="{% url 'normal_users:login' %}" method="post" class="ltn__form-box contact-form-box">
+                        {% csrf_token %}
+                        <input type="text" name="phone_number" placeholder="شماره موبایل خود را وارد کنید*" required>
+                        <input type="password" name="password" placeholder="رمز عبور خود را وارد کنید*" required>
+                        <div class="btn-wrapper mt-0">
+                            <button class="theme-btn-1 btn btn-block" type="submit">ورود</button>
+                        </div>
+                        <div class="go-to-btn mt-20">
+                            <a href="{% url 'normal_users:password_reset' %}"><small>فراموشی رمز عبور</small></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="account-create text-center pt-50">
+                    <h4>حساب کاربری ندارید؟</h4>
+                    <p>با ایجاد حساب کاربری در ویکودین از مزیت های فراوانی برخوردار باشید.</p>
+                    <div class="btn-wrapper">
+                        <a href="{% url 'normal_users:register' %}" class="theme-btn-1 btn black-btn">ثبت نام</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOGIN AREA END -->
+
+{% endblock %}

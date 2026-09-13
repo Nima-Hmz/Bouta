@@ -1,0 +1,88 @@
+services:
+
+  postgres:
+    image: postgis/postgis:16-3.5
+
+    environment:
+      POSTGRES_DB: ${DB_DEFAULT_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  redis:
+    image: redis:7-alpine
+
+    volumes:
+      - redis_data:/data
+
+    command: redis-server --appendonly yes
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+
+  web:
+    build: .
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./nursing_system:/app/nursing_system
+      - media_data:/app/nursing_system/media
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+
+  celery_worker:
+    build: .
+    env_file:
+      - .env
+    command: celery -A nursing_system.celery worker --loglevel=info
+    volumes:
+      - ./nursing_system:/app/nursing_system
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_beat:
+    build: .
+    env_file:
+      - .env
+    command: celery -A nursing_system.celery beat --loglevel=info
+    volumes:
+      - ./nursing_system:/app/nursing_system
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+
+volumes:
+  postgres_data:
+  redis_data:
+  media_data:

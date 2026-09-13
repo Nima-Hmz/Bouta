@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+
+    <link type="text/css" rel="stylesheet" href="{% static 'css/jalalidatepicker.min.css' %}" />
+    <script type="text/javascript" src="{% static 'js/jalalidatepicker.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<!-- BREADCRUMB AREA START -->
+<div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{% static 'img/bg/14.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__breadcrumb-inner">
+                    <h1 class="page-title">ثبت نام پرستاران</h1>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a href="{% url 'home:index' %}"><span class="ltn__secondary-color"><i
+                                            class="fas fa-home"></i></span> خانه</a></li>
+                            <li>ثبت نام پرستاران</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BREADCRUMB AREA END -->
+
+<!-- LOGIN AREA START (Register) -->
+<div class="ltn__login-area pb-110">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title-area text-center">
+                    <h1 class="section-title">ثبت نام پرستاران</h1>
+                    <p>با ثبت نام حساب کاربری خود از تمامی امکانات وب سایت بهره‌مند شوید</p>
+                    <p>توجه:برای  ثبت کلینیک در سامانه نام کاربری را نام کلینیک، و مدرک تحصیلی را -ثبت کلینیک- وارد کنید
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="account-login-inner">
+                    <form action="{% url 'nurse_users:new_register' %}" class="ltn__form-box contact-form-box" method="post" autocomplete="off">
+                        {% csrf_token %}   
+                        <input type="text" name="first_name" placeholder="نام" required value="{{ input_data.first_name|default:'' }}">
+                        <input type="text" name="last_name" placeholder="نام خانوادگی" required value="{{ input_data.last_name|default:'' }}">
+                        <input type="text" name="user_name" placeholder="نام کاربری (فارسی یا انگلیسی و تنها کارکتر خاص مجاز - )" required value="{{ input_data.user_name|default:'' }}">
+                        <input type="text" name="birthday" data-jdp name="date" autocomplete="off" placeholder="تاریخ تولد" required value="{{ input_data.birthday|default:'' }}">
+                        <label for="province">استان:</label>
+                        <div class="dropdown">
+                            <button class="dropdown-button">{{ input_data.province|default:'انتخاب استان' }}</button>
+                            <div class="dropdown-content">
+                                <input type="text" class="search-box" placeholder="جستجو...">
+                                <ul class="dropdown-list">
+                                    <li data-value="Tehran">تهران</li>
+                                    <li data-value="Isfahan">اصفهان</li>
+                                    <li data-value="Fars">فارس</li>
+                                    <li data-value="Khorasan Razavi">خراسان رضوی</li>
+                                    <li data-value="Mazandaran">مازندران</li>
+                                    <li data-value="Kerman">کرمان</li>
+                                    <li data-value="East Azerbaijan">آذربایجان شرقی</li>
+                                    <li data-value="West Azerbaijan">آذربایجان غربی</li>
+                                    <li data-value="Kurdistan">کردستان</li>
+                                    <li data-value="Golestan">گلستان</li>
+                                    <li data-value="Alborz">البرز</li>
+                                    <li data-value="Semnan">سمنان</li>
+                                    <li data-value="Lorestan">لرستان</li>
+                                    <li data-value="Yazd">یزد</li>
+                                    <li data-value="Khuzestan">خوزستان</li>
+                                    <li data-value="Markazi">مرکزی</li>
+                                    <li data-value="Qazvin">قزوین</li>
+                                    <li data-value="Kohgiluyeh and Boyer-Ahmad">کهگیلویه و بویراحمد</li>
+                                    <li data-value="Hamedan">همدان</li>
+                                    <li data-value="Qom">قم</li>
+                                    <li data-value="Chaharmahal and Bakhtiari">چهارمحال و بختیاری</li>
+                                    <li data-value="Gilan">گیلان</li>
+                                    <li data-value="Ardabil">اردبیل</li>
+                                    <li data-value="Zanjan">زنجان</li>
+                                    <li data-value="Bushehr">بوشهر</li>
+                                    <li data-value="Sistan and Baluchestan">سیستان و بلوچستان</li>
+                                    <li data-value="Hormozgan">هرمزگان</li>
+                                    <li data-value="Ilam">ایلام</li>
+                                    <li data-value="South Khorasan">خراسان جنوبی</li>
+                                    <li data-value="North Khorasan">خراسان شمالی</li>
+                                </ul>
+                            </div>
+                            <input type="hidden" name="province" id="hidden-province" value="{{ input_data.province|default:'' }}">
+                        </div><br><br>
+                        <input type="text" name="city" placeholder="شهر" required value="{{ input_data.city|default:'' }}">
+                        <input type="text" name="phone_number" placeholder="شماره موبایل" required value="{{ input_data.phone_number|default:'' }}">
+                        <input type="text" name="address" placeholder="آدرس" required value="{{ input_data.address|default:'' }}">
+                        <input type="text" name="national_id_number" placeholder="کد ملی" required value="{{ input_data.national_id_number|default:'' }}">
+                        <label for="sex">جنسیت</label>
+                        <select name="sex" required>
+                            <option value="M" {% if input_data.sex == 'M' %}selected{% endif %}>آقا</option>
+                            <option value="F" {% if input_data.sex == 'F' %}selected{% endif %}>خانم</option>
+                        </select>
+                        <br><br>
+                        <label for="education_level">مدرک تحصیلی</label>
+                        <select name="education_level" required>
+                            {% for education in education_levels %}
+                            <option value="{{ education.id }}" {% if input_data.education_level == education.id|stringformat:"s" %}selected{% endif %}>{{ education.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <br><br>
+
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="is_legal_entity" id="is_legal_entity" value="on">
+                            ثبت نام به عنوان یک نهاد(کلینیک‌ها و..)
+                        </label>
+
+                        <br><br>
+
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="accept_terms" id="accept_terms" value="on" required>
+                            تمامی <a style="color: green;" href="{% url 'home:terms' %}">قوانین و بند های قرارداد</a> را میپذیرم.
+                            
+                        </label>
+                        <div class="btn-wrapper">
+                            <button class="theme-btn-1 btn reverse-color btn-block" type="submit">ثبت
+                                نام</button>
+                        </div>
+                    </form>
+                    <script>
+                        jalaliDatepicker.startWatch();
+                    </script>
+                    <div class="by-agree text-center">
+                        <a href="{% url 'normal_users:login' %}">قبلا ثبت نام کرده اید؟ ورود</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOGIN AREA END -->
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+    <script src="{% static 'js/custom.js' %}"></script>
+
+{% endblock %}

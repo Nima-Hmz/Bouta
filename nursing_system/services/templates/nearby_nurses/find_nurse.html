@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+
+    <!-- used for the map -->
+    <link rel="stylesheet" href="https://static.neshan.org/sdk/leaflet/v1.9.4/neshan-sdk/v1.0.8/index.css"/>
+
+    <!--  AFTER Leaflet's CSS -->
+    <script src="https://static.neshan.org/sdk/leaflet/v1.9.4/neshan-sdk/v1.0.8/index.js"></script>
+
+    <style> 
+        #map { width: 100%; height: 400px; }
+    </style>
+
+
+    <!-- used for the drop down -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+
+            <!-- BREADCRUMB AREA START -->
+            <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{% static 'img/bg/14.jpg' %}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ltn__breadcrumb-inner">
+                                <h1 class="page-title">پرستاران اطراف</h1>
+                                <div class="ltn__breadcrumb-list">
+                                    <ul>
+                                        <li><a href="{% url 'home:index' %}"><span class="ltn__secondary-color"><i
+                                                        class="fas fa-home"></i></span> خانه</a></li>
+                                        <li>پرستاران اطراف</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- BREADCRUMB AREA END -->
+    
+            <!-- LOGIN AREA START -->
+            <div class="ltn__login-area mb-120">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                            <div class="account-login-inner section-bg-1">
+                                <form method="Post" action="{% url 'services:nearby_nurses_search' %}" class="ltn__form-box contact-form-box" id="location-form" autocomplete="off">
+                                    <p class="text-center">خدمت مورد نظر خود را انتخاب و موقعیت جغرافیایی خود را وارد کنید
+                                        تا از نزدیک ترین پرستاران فعال در سامانه به شما آگاه شوید
+                                    </p>
+                                    <!-- the map -->
+                                    {% csrf_token %}
+                                    {{ nurse_location_form.as_p }}
+                                    <div id="map"></div>
+                                    <br>
+
+                                    <!-- the drop down -->
+                                    <div class="dropdown">
+                                        <button class="dropdown-button">انتخاب خدمت</button>
+                                        <div class="dropdown-content">
+                                            <input type="text" class="search-box" placeholder="جستجو...">
+                                            <ul class="dropdown-list">
+                                                {% for skill in skills %}
+                                                    <li data-value="{{ skill.id }}">{{ skill.title }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <input type="hidden" name="province" id="hidden-province">
+                                    </div><br>
+                                    <br>
+
+                                    <div class="btn-wrapper mt-0 text-center">
+                                        <button type="submit"
+                                        class="btn theme-btn-1 btn-effect-1 text-uppercase">جست و جو
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- LOGIN AREA END -->
+
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+  var provinceLat  = {{ province_lat }};
+  var provinceLng  = {{ province_lng }};
+  var provinceZoom = {{ province_zoom }};
+
+  // Initialize normal Leaflet map
+  var map = L.map('map').setView(
+    [provinceLat, provinceLng],
+    provinceZoom
+  );
+
+  // OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19
+  }).addTo(map);
+
+
+  // Click → marker logic
+  var marker;
+
+  function onMapClick(e) {
+    if (marker) {
+      marker.setLatLng(e.latlng);
+    } else {
+      marker = L.marker(e.latlng).addTo(map);
+    }
+
+    var locationInput = document.getElementById("id_location");
+
+    if (locationInput) {
+      locationInput.value =
+        `SRID=4326;POINT(${e.latlng.lng} ${e.latlng.lat})`;
+    }
+  }
+
+  map.on('click', onMapClick);
+
+
+  // Form-submit guard
+  document.getElementById("location-form")
+    .addEventListener("submit", function(e) {
+
+      var locationInput = document.getElementById("id_location");
+
+      if (!marker || !locationInput.value.trim()) {
+        e.preventDefault();
+        alert("Please select a location on the map.");
+      }
+
+    });
+</script>
+
+    <!-- used for the drop down -->
+    <script src="{% static 'js/custom.js' %}"></script>
+{% endblock %}

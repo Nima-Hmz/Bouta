@@ -1,0 +1,103 @@
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 250px;
+}
+
+/* Dropdown button */
+.dropdown-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+/* Search box */
+.search-box {
+    width: 90%;
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+/* List of options */
+.dropdown-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+/* Individual list items */
+.dropdown-list li {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.dropdown-list li:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show dropdown when active */
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
+/* Custom scrollbar */
+.dropdown-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dropdown-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 8px;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
+/* Add red border if the user tries to submit without selecting */
+.error {
+    border: 2px solid red !important;
+}
+
+.star-rating-rtl {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.inline-star-rating {
+    display: inline-flex;
+    flex-direction: row-reverse;  /* if you want the stars in RTL order */
+    vertical-align: middle;
+}
+

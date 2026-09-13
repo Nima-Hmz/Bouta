@@ -1,0 +1,560 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jformat %}
+
+{% block extra_css %}
+
+    <link rel="stylesheet" href="https://static.neshan.org/sdk/leaflet/v1.9.4/neshan-sdk/v1.0.8/index.css"/>
+
+    <!-- AFTER Leaflet's CSS -->
+    <script src="https://static.neshan.org/sdk/leaflet/v1.9.4/neshan-sdk/v1.0.8/index.js"></script>
+
+    <style> 
+        #map { width: 100%; height: 400px; }
+    </style>
+
+    {{ working_hours_form.media }} 
+
+    <link type="text/css" rel="stylesheet" href="{% static 'css/jalalidatepicker.min.css' %}" />
+    <script type="text/javascript" src="{% static 'js/jalalidatepicker.min.js' %}"></script>
+
+
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+        <!-- BREADCRUMB AREA START -->
+        <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{% static 'img/bg/14.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ltn__breadcrumb-inner">
+                            <h1 class="page-title">حساب کاربری من</h1>
+                            <div class="ltn__breadcrumb-list">
+                                <ul>
+                                    <li><a href="{% url 'home:index' %}"><span class="ltn__secondary-color"><i
+                                                    class="fas fa-home"></i></span> خانه</a></li>
+                                    <li>حساب کاربری</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- BREADCRUMB AREA END -->
+
+        <!-- WISHLIST AREA START -->
+        <div class="liton__wishlist-area pb-70">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- PRODUCT TAB AREA START -->
+                        <div class="ltn__product-tab-area">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="ltn__tab-menu-list mb-50">
+                                            <div class="nav">
+                                                <a class="active show" data-bs-toggle="tab"
+                                                    href="#liton_tab_1_1">داشبورد <i class="fas fa-home"></i></a>
+                                                <a data-bs-toggle="tab" href="#liton_tab_1_5">جزئیات حساب کاربری<i
+                                                    class="fas fa-user"></i></a>
+                                                <a data-bs-toggle="tab" href="#liton_tab_1_2">اطلاعات تکمیلی حساب<i
+                                                        class="fas fa-file-alt"></i></a>
+
+                                                <a data-bs-toggle="tab" href="#liton_tab_1_3">آدرس و توضیحات<i
+                                                    class="fas fa-map-marker-alt"></i></a>
+                                                
+
+                                                        <form action="{% url 'normal_users:logout' %}" method="post" style="display: inline-block; text-align: center;">
+                                                            {% csrf_token %}
+                                                            <button type="submit" style="
+                                                                background: none;
+                                                                border: none;
+                                                                color: inherit;
+                                                                font: inherit;
+                                                                cursor: pointer;
+                                                                padding: 0;
+                                                                text-decoration: underline;
+                                                                display: inline;
+                                                                text-align: center;
+                                                                padding-right: 20px;
+                                                                padding-top: 10px;
+                                                                padding-bottom: 10px;
+                                                            ">
+                                                                خروج <i class="fas fa-sign-out-alt"></i>
+                                                            </button>
+                                                        </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade active show" id="liton_tab_1_1">
+                                                <div class="ltn__myaccount-tab-content-inner">
+                                                    <p> سلام <strong>{{ nurse_core.first_name }} {{ nurse_core.last_name }}</strong>
+                                                    </p>
+                                                    <p>وضعیت حسابی کاربری پرستار:{% if nurse_core.is_active %}فعال
+                                                        {% else %}
+                                                            غیر فعال
+                                                            <br>
+                                                            {{ nurse_core.register_request.get_status_display }}
+                                                            <br>
+                                                            {% if nurse_core.register_request.status == "pending"  %}
+                                                                حساب کاربری شما توسط تیم ما بررسی شد اما اطلاعات وارد شده شما مورد 
+                                                                تایید نبوده است برای اصلاح آن در بخش جزییات حساب کاربری اقدام فرمایید
+                                                                <br>
+                                                                {% if nurse_core.register_request.admin_message %}
+                                                                {{ nurse_core.register_request.admin_message }}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endif %}</p>
+                                                    <p>وضعیت اشتراک:{% if nurse_core.has_active_subscription %}فعال
+                                                        <br>
+                                                        تعداد روز های باقی مانده: {{ nurse_core.subscription.days_left }}
+                                                        {% else %}غیر فعال</p>
+
+                                                        <div class="card shadow-sm" style="max-width: 20rem;">
+                                                            <div class="card-body text-center">
+                                                              <h5 class="card-title mb-4">خرید اشتراک یک ساله</h5>
+                                                              <p class="card-text mb-4">دسترسی نامحدود به تمام امکانات برای ۱۲ ماه</p>
+                                                          
+                                                              <form method="post" action="{% url 'payment:buy-nurse-subscription' %}">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-success btn-lg w-100">
+                                                                  اشتراک را بخریم
+                                                                </button>
+                                                              </form>
+                                                            </div>
+                                                          </div>
+                                                          <br>
+                                                        
+                                                        {% endif %}
+                                                    <p>برای ورود به <a href="{% url 'nurse_users:service_dashboard' %}" style="color: green;">پنل مدیریت خدمات کلیک کنید</a></p>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="liton_tab_1_2">
+                                                <div class="ltn__form-box">
+                                                    <form action="{% url 'nurse_users:update_additional' %}" method="post">
+                                                        {% csrf_token %}  
+                                                        <fieldset>
+                                                            <legend>مهارت های پرستار</legend>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <br>
+                                                                    {% for skill in all_skills %}
+                                                                    <label>
+                                                                        <input type="checkbox" name="skills" value="{{ skill.id }}"
+                                                                            {% if skill.id in selected_skill_ids %}checked{% endif %}
+                                                                        >
+                                                                        {{ skill.title }}
+                                                                    </label><br>
+                                                                {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <legend>دانش های پرستار</legend>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <br>
+                                                                    {% for knowledge in all_additional_knowledg %}
+                                                                        <label>
+                                                                            <input type="checkbox" name="knowledge" value="{{ knowledge.id }}"
+                                                                            {% if knowledge in selected_knowledge %} checked {% endif %}>
+                                                                            {{ knowledge.title }}
+                                                                        </label><br>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <legend>آشنایی با ابزار های مدرن پرستاری</legend>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <br>
+                                                                    {% for nursing in all_modern_nursing %}
+                                                                        <label>
+                                                                            <input type="radio" name="modern_nursing" value="{{ nursing.id }}"
+                                                                            {% if nursing == selected_nursing %} checked {% endif %}>
+                                                                            {{ nursing.title }}
+                                                                        </label><br>
+                                                                    {% endfor %}
+                                                                    <!-- do it here -->
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <legend>تمایل به کار شیفتی(نیمه وقت)</legend>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <br>
+                                                                    <label>
+                                                                        <input type="checkbox" name="is_part_time" value="True"
+                                                                        {% if nurse_core.nurse_user_additional_info.part_time %} checked {% endif %}>
+                                                                        تمایل به کار شیفتی
+                                                                    </label><br>
+                                                                    <!-- do it here -->
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <div class="btn-wrapper">
+                                                            <button type="submit"
+                                                                class="btn theme-btn-1 btn-effect-1 text-uppercase">ذخیره
+                                                                تغییرات</button>
+                                                        </div>
+                                                    </form>
+                                                    <script>
+                                                        jalaliDatepicker.startWatch();
+                                                    </script>         
+                                                </div>
+                                                <br><br><br>
+                                                <div class="ltn__form-box">
+                                                    <div class="ltn__myaccount-tab-content-inner">
+                                                        <p><strong>ساعات کاری تعریف شده شما: </strong>
+                                                            <br>
+                                                            {% if not nurse_core.nurse_user_additional_info.working_hours.all %}
+                                                                ساعت کاری تعریف نشده
+                                                            {% else %}
+                                                                {% for work_hour in nurse_core.nurse_user_additional_info.working_hours.all %}
+                                                                    {{ work_hour.get_day_display }} : {{work_hour.start_time | time:"H:i"}} تا {{ work_hour.end_time | time:"H:i"}}
+                                                                    <br>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </p>
+                                                        <form action="{% url 'nurse_users:delete_working_hour' %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <button type="submit"
+                                                                style="background-color: crimson;">
+                                                                حذف ساعات کاری</button>
+                                                        </form>
+                                                    </div>
+                                                    <form action="{% url 'nurse_users:update_working_hour' %}" method="POST">
+                                                        <fieldset>
+                                                            {% csrf_token %}
+                                                            {{ working_hours_form.as_p }}
+                                                            <button type="submit"
+                                                                    class="btn theme-btn-1 btn-effect-1 text-uppercase">ذخیره
+                                                                    تغییرات</button>
+                                                        </fieldset>
+                                                    </form>
+                                                    
+                                                </div>
+                                                <br><br><br>
+                                                <div class="ltn__form-box">
+                                                    <div class="ltn__myaccount-tab-content-inner">
+                                                        <p><strong> سوابق شغلی تعریف شده شما: </strong>
+                                                            <br>
+                                                            {% if not nurse_core.nurse_user_additional_info.work_experience.all %}
+                                                                 سوابق شغلی تعریف نشده
+                                                            {% else %}
+                                                                {% for work_ex in nurse_core.nurse_user_additional_info.work_experience.all %}
+                                                                    {{ work_ex.title }} : {{work_ex.start_work | jformat:"%Y/%m/%d"}} تا {{ work_ex.end_work | jformat:"%Y/%m/%d"}}
+                                                                    <br>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </p>
+                                                        <form action="{% url 'nurse_users:delete_workexperience' %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <button type="submit"
+                                                                style="background-color: crimson;">
+                                                                حذف سوابق شغلی</button>
+                                                        </form>
+                                                    </div>
+                                                    <form action="{% url 'nurse_users:update_workexperience' %}" method="POST">
+                                                        <fieldset>
+                                                            {% csrf_token %}
+                                                            <input type="text" name="work_experience_title" placeholder="نام مرکز" required>
+                                                            <input type="text" name="start_work" data-jdp name="date" autocomplete="off" placeholder="تاریخ شروع به کار" required>
+                                                            <input type="text" name="end_work" data-jdp name="date" autocomplete="off" placeholder="تاریخ پایان کار" required>
+                                                            <button type="submit"
+                                                                    class="btn theme-btn-1 btn-effect-1 text-uppercase">ذخیره
+                                                                    تغییرات</button>
+                                                        </fieldset>
+                                                    </form>
+                                                    <script>
+                                                        jalaliDatepicker.startWatch();
+                                                    </script>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="liton_tab_1_2">
+                                                
+                                            </div>
+                                            <div class="tab-pane fade" id="liton_tab_1_3">
+
+                                                <h2>موقعیت جغرافیایی پرستار</h2>
+                                                <div class="ltn__myaccount-tab-content-inner">
+                                                    <p>با مشخص کردن موفعیت جغرافیایی خود کاربران سامانه 
+                                                        میتوانند بر اساس نزدیکی موقعیت جغرافیایی شما به آنها درخواست ارسال کنند</p>
+                                                </div>
+                                                <form action="{% url 'nurse_users:update_location' %}" method="post" id="location-form" autocomplete="off">
+                                                    {% csrf_token %}
+                                                    {{ nurse_location_form.as_p }}
+                                                    <div id="map"></div>
+                                                    <button type="submit"
+                                                    class="btn theme-btn-1 btn-effect-1 text-uppercase">ذخیره
+                                                    تغییرات</button>
+                                                </form>
+                                                <br><br>
+                                                <form method="post" action="{% url 'nurse_users:update_description' %}">
+                                                    {% csrf_token %}
+                                                    <div class="mb-3">
+                                                        <label for="nurse_description" class="form-label">توضیحات و رزومه</label>
+                                                        <textarea class="form-control" id="nurse_description" name="nurse_description" rows="10" placeholder="رزومه خود را اینجا بنویسید"
+                                                        >{{ nurse_core.nurse_user_additional_info.description }}</textarea>
+                                                    </div>
+                                                    <button type="submit"
+                                                    class="btn theme-btn-1 btn-effect-1 text-uppercase">ذخیره
+                                                    تغییرات</button>
+                                                </form>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="liton_tab_1_5">
+                                                <div class="ltn__myaccount-tab-content-inner">
+                                                    <p>
+                                                        {% if not nurse_core.is_active %}
+                                                            {% if nurse_core.register_request.status == "pending"  %}
+                                                                حساب کاربری شما توسط تیم ما بررسی شد اما اطلاعات وارد شده شما مورد 
+                                                                تایید نبوده است برای اصلاح آن در این بخش اقدام فرمایید
+                                                            {% endif %}
+                                                            {% if nurse_core.register_request.status == "in_progress"  %}
+                                                                اطلاعات حساب کاربری شما در حال بررسی است
+                                                            {% endif %}
+                                                            {% if nurse_core.register_request.status == "accepted"  %}
+                                                                اطلاعات حساب کاربری شما تایید شده اما حساب کاربری شما غیر فعال است
+                                                            {% endif %}
+                                                        {% else %}
+                                                        اطلاعات حساب کاربری پرستار:
+                                                        <br>
+                                                        <strong>توجه کنید با هر تغییر در اطلاعات خود حساب کاربری شما موقتا تا تایید دوباره سامانه غیر فعال خواهد شد</strong>
+                                                        {% endif %}
+                                                    </p>
+                                                    <div class="ltn__form-box">
+                                                        <form action="{% url 'nurse_users:update_base' %}" method="post" enctype="multipart/form-data" onsubmit="confirmChange()">
+                                                            {% csrf_token %}  
+                                                            <div class="row mb-50">
+                                                                <div class="col-md-6">
+                                                                    <label>نام:</label>
+                                                                    <input type="text" name="first_name" value="{{ nurse_core.first_name }}" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>نام خانوادگی:</label>
+                                                                    <input type="text" name="last_name" value="{{ nurse_core.last_name }}" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>نام کاربری:</label>
+                                                                    <input type="text" name="display_user_name" value="{{ nurse_core.display_user_name }}" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>تاریخ تولد:</label>
+                                                                    <input type="text" name="birthday" data-jdp name="date" autocomplete="off" placeholder="تاریخ تولد" value="{{ nurse_core.birthday|jformat:"%Y/%m/%d" }}" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>آدرس :</label>
+                                                                    <input type="text" name="address" value="{{ nurse_core.address }}" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>شهر :</label>
+                                                                    <input type="text" name="city" value="{{ nurse_core.city }}" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>شماره موبایل :</label>
+                                                                    <input type="text" name="phone_number" value="{{ nurse_core.phone_number }}" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>کد ملی :</label>
+                                                                    <input type="text" name="national_id_number" value="{{ nurse_core.national_id_number }}" placeholder="کد ملی" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>استان:</label>
+                                                                    <div class="dropdown">
+                                                                        <button class="dropdown-button">{{ nurse_core.get_province_display }}</button>
+                                                                        <div class="dropdown-content">
+                                                                            <input type="text" class="search-box" placeholder="جستجو..." value="{{ nurse_core.get_province_display }}">
+                                                                            <ul class="dropdown-list">
+                                                                                <li data-value="Tehran">تهران</li>
+                                                                                <li data-value="Isfahan">اصفهان</li>
+                                                                                <li data-value="Fars">فارس</li>
+                                                                                <li data-value="Khorasan Razavi">خراسان رضوی</li>
+                                                                                <li data-value="Mazandaran">مازندران</li>
+                                                                                <li data-value="Kerman">کرمان</li>
+                                                                                <li data-value="East Azerbaijan">آذربایجان شرقی</li>
+                                                                                <li data-value="West Azerbaijan">آذربایجان غربی</li>
+                                                                                <li data-value="Kurdistan">کردستان</li>
+                                                                                <li data-value="Golestan">گلستان</li>
+                                                                                <li data-value="Alborz">البرز</li>
+                                                                                <li data-value="Semnan">سمنان</li>
+                                                                                <li data-value="Lorestan">لرستان</li>
+                                                                                <li data-value="Yazd">یزد</li>
+                                                                                <li data-value="Khuzestan">خوزستان</li>
+                                                                                <li data-value="Markazi">مرکزی</li>
+                                                                                <li data-value="Qazvin">قزوین</li>
+                                                                                <li data-value="Kohgiluyeh and Boyer-Ahmad">کهگیلویه و بویراحمد</li>
+                                                                                <li data-value="Hamedan">همدان</li>
+                                                                                <li data-value="Qom">قم</li>
+                                                                                <li data-value="Chaharmahal and Bakhtiari">چهارمحال و بختیاری</li>
+                                                                                <li data-value="Gilan">گیلان</li>
+                                                                                <li data-value="Ardabil">اردبیل</li>
+                                                                                <li data-value="Zanjan">زنجان</li>
+                                                                                <li data-value="Bushehr">بوشهر</li>
+                                                                                <li data-value="Sistan and Baluchestan">سیستان و بلوچستان</li>
+                                                                                <li data-value="Hormozgan">هرمزگان</li>
+                                                                                <li data-value="Ilam">ایلام</li>
+                                                                                <li data-value="South Khorasan">خراسان جنوبی</li>
+                                                                                <li data-value="North Khorasan">خراسان شمالی</li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <input type="hidden" name="province" id="hidden-province" value="{{ nurse_core.province }}">
+                                                                    </div><br><br>
+                                                                </div>
+                                                            </div>
+                                                            <fieldset>
+                                                                <legend>دیگر اطلاعات</legend>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <br>
+                                                                        <label for="picture">گواهی تایید</label>
+                                                                        <img src="{{ nurse_core.ministry_proof_picture.url }}" width="200" height="250" alt="">
+                                                                        <input name="ministry_proof_picture" type="file" name="picture" accept="image/*">
+                                                                        <br><br>
+                                                                        <label for="picture">عکس پرستار</label>
+                                                                        <img src="{{ nurse_core.profile_picture.url }}" width="200" height="250" alt="">
+                                                                        <input type="file" name="profile_picture" accept="image/*">
+                                                                        <br><br>
+                                                                        <label for="picture">کارت شناسایی</label>
+                                                                        <img src="{{ nurse_core.identity_card_picture.url }}" width="200" height="250" alt="">
+                                                                        <input type="file" name="identity_card_picture" accept="image/*">
+                                                                        <br><br>
+                                                                        <label for="sex">جنسیت</label>
+                                                                        <select name="sex" required>
+                                                                            <option value="M" {% if nurse_core.sex == "M" %}selected{% endif %}>آقا</option>
+                                                                            <option value="F" {% if nurse_core.sex == "F" %}selected{% endif %}>خانم</option>
+                                                                        </select>
+                                                                        <br><br>
+                                                                        <label for="education_level">مدرک تحصیلی</label>
+                                                                        <select name="education_level" required>
+                                                                            {% for education in education_levels %}
+                                                                            <option value="{{ education.id }}" {% if nurse_core.education_level.id == education.id %}selected{% endif %}>{{ education.title }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                        <br><br>
+                                                                    </div>
+                                                                </div>
+                                                            </fieldset>
+                                                            <div class="btn-wrapper">
+                                                                <button type="submit"
+                                                                    class="btn theme-btn-1 btn-effect-1 text-uppercase">ذخیره
+                                                                    تغییرات</button>
+                                                            </div>
+                                                        </form>
+                                                        <script>
+                                                            jalaliDatepicker.startWatch();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- PRODUCT TAB AREA END -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- WISHLIST AREA START -->
+
+{% endblock %}
+
+{% block extra_js %}
+    <!-- Leaflet map -->
+
+<script>
+    // Province center + zoom
+    var provinceLat  = {{ province_lat }};
+    var provinceLng  = {{ province_lng }};
+    var provinceZoom = {{ province_zoom }};
+
+    // Initialize Leaflet map
+    var map = L.map('map').setView(
+        [provinceLat, provinceLng],
+        provinceZoom
+    );
+
+    // OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+
+
+    var marker;
+
+    {% if existing_location %}
+        // If there’s an existing location, show it on the map
+        var existingLocation = {{ existing_location.geojson|safe }};
+
+        if (existingLocation && existingLocation.coordinates) {
+            var lat = existingLocation.coordinates[1];
+            var lng = existingLocation.coordinates[0];
+
+            marker = L.marker([lat, lng]).addTo(map);
+
+            // Zoom in on the existing point
+            map.setView([lat, lng], 12);
+
+            // Populate the hidden field
+            document.getElementById("id_location").value =
+                `SRID=4326;POINT(${lng} ${lat})`;
+        }
+    {% endif %}
+
+
+    // Click → marker logic
+    function onMapClick(e) {
+        if (marker) {
+            marker.setLatLng(e.latlng);
+        } else {
+            marker = L.marker(e.latlng).addTo(map);
+        }
+
+        var locationInput = document.getElementById("id_location");
+
+        if (locationInput) {
+            locationInput.value =
+                `SRID=4326;POINT(${e.latlng.lng} ${e.latlng.lat})`;
+        }
+    }
+
+    map.on('click', onMapClick);
+
+
+    // Prevent form submit without a selected point
+    document.getElementById("location-form")
+        .addEventListener("submit", function(e) {
+
+            var locationInput = document.getElementById("id_location");
+
+            if (!marker || !locationInput.value.trim()) {
+                e.preventDefault();
+                alert("لطفاً روی نقشه یک نقطه را انتخاب کنید.");
+            }
+        });
+
+
+    // Extra confirmation function
+    function confirmChange() {
+        return confirm(
+            "آیا از درخواست خود اطمینان دارید؟ پس از این تا تایید دوباره سامانه حساب شما غیر فعال خواهد شد."
+        );
+    }
+</script>
+
+    <script src="{% static 'js/custom.js' %}"></script>
+{% endblock %}

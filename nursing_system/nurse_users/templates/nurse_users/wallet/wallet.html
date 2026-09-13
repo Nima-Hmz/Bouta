@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load jformat %}
+
+{% block content %}
+
+    <!-- BREADCRUMB AREA START -->
+    <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{% static 'img/bg/14.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ltn__breadcrumb-inner">
+                        <h1 class="page-title">کیف پول پرستار</h1>
+                        <div class="ltn__breadcrumb-list">
+                            <ul>
+                                <li><a href="{% url 'home:index' %}"><span class="ltn__secondary-color"><i
+                                                class="fas fa-home"></i></span> خانه</a></li>
+                                <li>کیف پول پرستار</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BREADCRUMB AREA END -->
+
+    <!-- WISHLIST AREA START -->
+    <div class="ltn__checkout-area mb-105">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ltn__checkout-inner">
+                        <div class="tab-pane fade active show" id="liton_tab_1_1">
+                            <div class="ltn__myaccount-tab-content-inner">
+                                <p>پرستار محترم شما از طریق این بخش میتوانید کیف پول خود را مدیریت کنید.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-12 learts-mb-30">
+                                <h4>اطلاعات فردی :</h4>
+                                <address>
+                                    <p>نام : {{ nurse_core.first_name }} {{ nurse_core.last_name }}</p>
+                                    <p>شماره موبایل : {{ nurse_core.phone_number }}</p>
+                                    <p>استان : {{ nurse_core.get_province_display }}</p>
+                                    <p>وضعیت فعال بودن حساب : {% if nurse_core.is_active %}✅{% else %}❌{% endif %}</p>
+                                </address>
+                            </div>
+                            <div class="col-md-6 col-12 learts-mb-30">
+                                <h4>اطلاعات کیف پول:</h4>
+                                <address>
+                                    <p>شماره شبا ثبت شده : {% if nurse_wallet.bank_info %}{{ nurse_wallet.bank_info }}{% else %}شماره شبا ثبت نشده{% endif %}</p>
+                                    <p>وضعیت تایید شماره شبا : {% if nurse_wallet.valid_bank_info %}✅{% else %}❌{% endif %}</p>
+                                    <p>وضعیت درخواست ثبت اطالاعات بانکی : {% if nurse_wallet.valid_bank_info %}تایید شده ✅{% else %}{% if bank_info_request %}{{bank_info_request.get_status_display}}{% else %}درخواستی یافت نشد{% endif %}{% endif %}</p>
+                                    <p>موجودی کیف پول : {{ nurse_wallet.balance|intcomma }} تومان</p>
+                                </address>
+                            </div>
+                        </div>
+
+                        <div class="ltn__checkout-single-content mt-50">
+                            <h4 class="title-2">ثبت اطاعات کیف پول</h4>
+                            <div class="ltn__checkout-single-content-info">
+                                <form method="post" action="{% url 'nurse_users:nurse_update_bankinfo' %}" onsubmit="return confirmBankInfo()">
+                                    {% csrf_token %}
+                                    <h6>اطلاعات حساب بانکی</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="bank_info1">دقت کنید که شماره شبا وارد شده با نام و شماره موبایل ثبت شده مطابقت داشته باشد</label>
+                                            <div class="input-item input-item-name ltn__custom-icon">
+                                                <input type="text" name="bank_info_request" id="bank_info1" placeholder="شماره شبا" value="{% if nurse_wallet.bank_info %}{{ nurse_wallet.bank_info }}{% endif %}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">ارسال
+                                        </button>
+                                    <p>وضعیت اطلاعات بانکی : {% if nurse_wallet.valid_bank_info %}تایید شده ✅{% else %}{% if bank_info_request %}{{bank_info_request.get_status_display}}{% else %}درخواستی یافت نشد{% endif %}{% endif %}</p>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="ltn__checkout-single-content mt-50">
+                            <h4 class="title-2">ثبت درخواست واریز به حساب</h4>
+                            <div class="ltn__checkout-single-content-info">
+                                <form method="post" action="{% url 'nurse_users:nurse_pay_request' %}" onsubmit="return confirmPayRequest()">
+                                    {% csrf_token %}
+                                    <h6>اطلاعات حساب واریزی</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="money_info">مبلغ درخواستی خود را وارد کنید(به یاد داشته باشید مبلغ مورد نظر به شماره شبا وارد شده واریز میشود)</label>
+                                            <div class="input-item input-item-name ltn__custom-icon">
+                                                <input type="text" name="money_info" id="money_info" placeholder="مبلغ واریزی">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">ارسال
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ltn__state-location">
+                                    <h2 class="ltn__state-location-title">آخرین درخواست های واریز</h2>
+                                </div>
+                            </div>
+        
+                            {% if pay_requests %}
+                            {% for pay_request in pay_requests %}
+                            <div class="col-lg-4">
+                                <div class="ltn__map-item">
+                                    <h3 class="ltn__location-name">{{ pay_request.j_update_at|jformat:"%H:%M - %Y/%m/%d" }}</h3>
+                                    <h5 class="ltn__location-single-info"><i class="fas fa-map-marked-alt"></i>مبلغ : {{ pay_request.amount|intcomma }} تومان
+                                        </h5>
+                                    <h4 class="ltn__location-single-info"><i class="fas fa-phone-volume"></i>وضعیت : {{ pay_request.get_status_display }}</h4>
+                                    <p>کد رهگیری : {{ pay_request.request_id }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <p>موردی یافت نشد</p>
+                            {% endif %}
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ltn__state-location">
+                                    <h2 class="ltn__state-location-title">تراکنش های کیف پول</h2>
+                                </div>
+                            </div>
+        
+                            {% if w_transactions %}
+                            {% for transaction in w_transactions %}
+                            <div class="col-lg-4">
+                                <div class="ltn__map-item">
+                                    <h3 class="ltn__location-name">{{ transaction.get_transaction_type_display }}</h3>
+                                    <h5 class="ltn__location-single-info"><i class="fas fa-map-marked-alt"></i>مبلغ : {{ transaction.amount|intcomma }} تومان
+                                        </h5>
+                                    <h4 class="ltn__location-single-info"><i class="fas fa-phone-volume"></i>مرجع : {{ transaction.reference }}</h4>
+                                    <p>تاریخ : {{ transaction.j_time|jformat:"%H:%M - %Y/%m/%d" }}</p>
+                                    <p>کد رهگیری : {{ transaction.transaction_id }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <p>موردی یافت نشد</p>
+                            {% endif %}
+
+                    <!-- Pagination Controls -->
+
+                    <div class="col-lg-12">
+                        <div class="ltn__pagination-area text-center">
+                            <div class="ltn__pagination">
+                                <ul>
+                                    {% if w_transactions.has_previous %}
+                                    <li><a href="?page={{ w_transactions.previous_page_number }}"><i class="fas fa-angle-double-right"></i></a></li>
+                                    {% endif %}
+                                    <li class="active"><a href="#">{{ w_transactions.number }}</a></li>
+                                    {% if w_transactions.has_next %}
+                                    <li><a href="?page={{ w_transactions.next_page_number }}"><i class="fas fa-angle-double-left"></i></a></li>
+                                    {% endif %}
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <!-- End Pagination Controls -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- WISHLIST AREA START -->
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    function confirmBankInfo() {
+        return confirm("آیا از تغییر اطلاعات اطمینان دارید ؟ ");
+    }
+    function confirmPayRequest() {
+        return confirm("آیا از ارسال درخواست خود اطمینان دارید ؟ ");
+    }
+</script>
+{% endblock %}
