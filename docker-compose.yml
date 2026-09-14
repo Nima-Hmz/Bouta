@@ -18,6 +18,27 @@ services:
       timeout: 5s
       retries: 10
 
+  migrate:
+    build: .
+    env_file:
+      - .env
+
+    command: >
+      sh -c "
+        python3 manage.py migrate --database=default &&
+        python3 manage.py migrate --database=content_db &&
+        python3 manage.py migrate --database=services_db
+      "
+
+    volumes:
+      - ./nursing_system:/app/nursing_system
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
 
   redis:
     image: redis:7-alpine
@@ -36,9 +57,10 @@ services:
 
   web:
     build: .
-
     env_file:
       - .env
+
+    command: python3 manage.py runserver 0.0.0.0:8000
 
     volumes:
       - ./nursing_system:/app/nursing_system
@@ -48,9 +70,8 @@ services:
       - "8000:8000"
 
     depends_on:
-      postgres:
-        condition: service_healthy
-
+      migrate:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
 
@@ -59,12 +80,15 @@ services:
     build: .
     env_file:
       - .env
+
     command: celery -A nursing_system.celery worker --loglevel=info
+
     volumes:
       - ./nursing_system:/app/nursing_system
+
     depends_on:
-      postgres:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
 
@@ -72,12 +96,15 @@ services:
     build: .
     env_file:
       - .env
+
     command: celery -A nursing_system.celery beat --loglevel=info
+
     volumes:
       - ./nursing_system:/app/nursing_system
+
     depends_on:
-      postgres:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
 
