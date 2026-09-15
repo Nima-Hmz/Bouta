@@ -13,7 +13,6 @@ The GIS layer also requires system-level geospatial dependencies and a compatibl
 
 
 
-<p>
-  <img src="docs/images/1.png" width="45%">
-  <img src="docs/images/2.png" width="45%">
-</p>
+<img src="docs/images/1.png" width="75%">
+
+<img src="docs/images/2.png" width="75%">
