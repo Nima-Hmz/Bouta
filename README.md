@@ -137,7 +137,7 @@ You do not need to install Python, PostgreSQL, PostGIS, Redis, or the system-lev
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/bouta.git
+git clone https://github.com/Nima-Hmz/Bouta.git
 cd bouta
 ```
 
