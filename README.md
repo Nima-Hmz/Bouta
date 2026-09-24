@@ -124,7 +124,7 @@ A typical location-based nurse search follows this process:
 Additional documentation covering the project's architecture, development workflow, and other technical details will be published soon.
 
 medium-story: Engineering a GIS Application: Strategies and Trade-offs :
-https://medium.com/@hmzmain11/engineering-a-gis-application-strategies-and-trade-offs-7670db98910c
+https://medium.com/@Nima-Hmz/engineering-a-gis-application-strategies-and-trade-offs-7670db98910c
 
 
 ## Development Setup
