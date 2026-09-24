@@ -120,6 +120,12 @@ A typical location-based nurse search follows this process:
 5. Frequently accessed data can be served through Redis caching.
 6. The results are returned to the patient through the Django application.
 
+## Documentation
+Additional documentation covering the project's architecture, development workflow, and other technical details will be published soon.
+
+medium-story: Engineering a GIS Application: Strategies and Trade-offs :
+https://medium.com/@hmzmain11/engineering-a-gis-application-strategies-and-trade-offs-7670db98910c
+
 
 ## Development Setup
 
@@ -202,11 +208,6 @@ docker compose down -v
 ```
 
 > **Warning:** Removing the volumes will delete the local PostgreSQL database, Redis data, and uploaded media stored in Docker volumes.
-
-
-
-## Documentation
-Additional documentation covering the project's architecture, development workflow, and other technical details will be published soon.
 
 
 ## Project Status
